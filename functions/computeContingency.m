@@ -46,7 +46,7 @@ nMatchesPerDetection = sum(matchIndices, 2);
 % No truth
 noTruthIndices = find(nMatchesPerDetection == 0);
 % Unique detections
-noDetectionIndices = find(nMatchesPerTruth == 0);
+noDetectionIndices = find(nMatchesPerTruth == 0); noDetectionIndices = noDetectionIndices(:);
 %
 detectionWSingleTruth = find(nMatchesPerDetection == 1)'; 
 detectionWMultipleTruth = find(nMatchesPerDetection > 1)'; 

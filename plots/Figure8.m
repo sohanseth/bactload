@@ -2,6 +2,7 @@ flagPlot = true; flagSave = true;
 FILEPATH = '../data/cell/imageList';
 
 %% Figure 8: positive and negative RBF centers
+colormapGreen = [zeros(128, 1), (1:128)'/128, zeros(128, 1)];
 yLabelList = {'9\times 9', '27\times 27', '45\times 45', '63\times 63'};
 titleList = {'t -1', 't', 't +1'};
 

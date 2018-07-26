@@ -10,5 +10,5 @@ for K = 4%1:44
     plotAnnot(removeQuantiles(imageList{K}), annotationList{K}(:, [2 1]), ...
             'titleList', titleList, 'figHandle', h, 'fill', false);
 end
-filename = '../figure/fig/ahsan_annotation_st.fig';
+filename = '../figures/fig/ahsan_annotation_st.fig';
 saveImage(filename, 'figHandle', gcf);

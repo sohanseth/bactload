@@ -19,3 +19,18 @@ matchIndices(singleTruthMultipleDetections(:, 1), unique(singleTruthMultipleDete
 matchIndices(unique(singleDetectionMultipleTruths(:, 1)), singleDetectionMultipleTruths(:, 2)) % Each column has one 1
 
 matchIndices(unique(multipleTruthsMultipleDetections(:, 1)), unique(multipleTruthsMultipleDetections(:, 2))); % arbitrary
+
+%%
+truePositives = singleTruthSingleDetection(:, 1);
+falsePositives = noTruthIndices;
+falseNegatives = noDetectionIndices;
+
+[u, i] = unique(singleTruthMultipleDetections(:, 2)); % location of unique in i
+truePositives = [truePositives; singleTruthMultipleDetections(i, 1)];
+singleTruthMultipleDetections(i, :) = [];
+falsePositives = [falsePositives; singleTruthMultipleDetections(:, 1)];
+
+[u, i] = unique(singleDetectionMultipleTruths(:, 1)); % location of unique in i
+truePositives = [truePositives; singleDetectionMultipleTruths(i, 1)];
+singleDetectionMultipleTruths(i, :) = [];
+falseNegatives = [falseNegatives; singleDetectionMultipleTruths(:, 2)];

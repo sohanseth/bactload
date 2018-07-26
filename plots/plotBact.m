@@ -17,17 +17,41 @@ param.weights = hyp{1}.w;
 param.bias = hyp{1}.b;
 
 %%
-for countPatient = 1:12; 
-    for countPrePost = 1:2;
+for countPatient = 6:12%1:12;
+    if countPatient == 10
+        continue
+    end
+    for countPrePost = 1:2
         if countPatient < 7
             file = matfile(sprintf('%sBAC2PatientFrame.mat', FILEPATH));
         else
             file = matfile(sprintf('%sBAC2PatientFrame_2.mat', FILEPATH));
         end
         tmp = file.videoList(countPatient, countPrePost); imgseq = tmp{1}; clear tmp;
-        [imgseqprob, bbs, bactCount] = annotateVideo2(double(imgseq), param, 'threshList', threshList, 'filename', './tmp.mat');
-        save(sprintf('../data/ip_%d_%d', FILEPATH, countPatient, countPrePost), 'objCountList', 'filesList', 'bbsList', 'threshList')
+        imgseq = removeOutside(removeQuantiles(imgseq));
         
-        writeVideo([ANNOTATIONPATH, file{1}(1:end-4), '.avi'], imgseq, bbsList)
+        if exist(sprintf('%sip_%d_%d.mat', ANNOTATIONPATH, countPatient, countPrePost))
+            load(sprintf('%sip_%d_%d', ANNOTATIONPATH, countPatient, countPrePost), 'bbs')
+            if length(bbs) == size(imgseq, 3) - 1 % last frame not annotated due to temporal resolution
+                warning('file exists.\n')
+                continue;
+            end
+        end
+        
+        [imgseqprob, bbs, bactCount] = annotateVideo2(double(imgseq), param, 'threshList', threshList, 'filename', './tmp.mat');
+        save(sprintf('%sip_%d_%d', ANNOTATIONPATH, countPatient, countPrePost), 'imgseqprob', 'bbs', 'bactCount', 'threshList', '-v7.3');
+        
+        writeVideo(sprintf('%sip_%d_%d.avi', ANNOTATIONPATH, countPatient, countPrePost), imgseq, bbs(:, 0.99 == threshList))
+        
+        !rm ./tmp.mat
     end
 end
+
+%% updated BAC2PatientFrame_bactCount
+for countPatient = 1:6
+    for countPrePost = 1:2
+        load(sprintf('%sip_%d_%d', ANNOTATIONPATH, countPatient, countPrePost), 'bactCount');
+        bactCountList{countPatient, countPrePost} = bactCount(:, 5);
+    end
+end
+save(sprintf('%sBAC2PatientFrame_bactCount', ANNOTATIONPATH), 'bactCountList');

@@ -6,6 +6,6 @@ ANNOTATIONPATH = '/run/media/sseth/SeagateExt/Cleveland/matlabFilesAnnotated/';
 for file = filesList
     count = find(strcmp(file, filesList));
     load(sprintf('%s%s', VIDEOPATH, file{1}))
-    
-    writeVideo([ANNOTATIONPATH, file{1}(1:end-4), '.avi'], imgseq, bbsList{count})
+    imgseq = removeOutside(removeQuantiles(imgseq));
+    writeVideo([ANNOTATIONPATH, file{1}(1:end-4), '.avi'], imgseq, bbsList{count}(:, 3))
 end

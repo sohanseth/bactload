@@ -3,6 +3,11 @@ FILEPATH = '../data/bact/';
 
 %%
 load(sprintf('%sBAC2PatientFrame_bactCount.mat', FILEPATH))
+
+% 26.07.2018: updated to consider more frames
+ANNOTATIONPATH = '/run/media/sseth/SeagateExt/BAC2VideosAnnotated/';
+load(sprintf('%sBAC2PatientFrame_bactCount.mat', ANNOTATIONPATH))
+
 bactCountList = bactCountList([1,3,4,2,5,6], :);
 myfigure([6 2]);
 plotPrePost(cellfun(@(x)(x(:, 1)), bactCountList, 'UniformOutput', false), 'divExp', [3 3], ...

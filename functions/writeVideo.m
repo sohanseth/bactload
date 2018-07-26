@@ -19,7 +19,7 @@ open(outputVideo)
 h = myfigure([4 4]);
 for countFrame = 2:size(annotList, 1) % size(imgseq, 3) - 1
     handlesList{countFrame} = ...
-        plotAnnot(removeQuantiles(removeOutside(imgseq(:, :, countFrame))), annotList{countFrame, 3}, 'figHandle', h);
+        plotAnnot(removeQuantiles(removeOutside(imgseq(:, :, countFrame))), annotList{countFrame}, 'figHandle', h);
     
     writeVideo(outputVideo, getframe(handlesList{countFrame}))
 end

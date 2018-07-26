@@ -33,22 +33,41 @@ varDefault = {4, true, 3, 4, {'TP', 'FP', 'FN'}, [], [], true, [], colorList, 10
 options = parseVarArg(varList, varDefault, varargin);
 
 matchIndices = pdist2(imgannot_est, imgannot_true, 'euclidean') < options.diameter; 
-[~, matchIndicesSorted, noTruthIndices, noDetectionIndices, ...
+[~, ~, noTruthIndices, noDetectionIndices, ...
     singleTruthSingleDetection, singleTruthMultipleDetections, singleDetectionMultipleTruths, ...
     multipleTruthsMultipleDetections] = computeContingency(matchIndices);
 
+truePositives = singleTruthSingleDetection(:, 1);
+falsePositives = noTruthIndices;
+falseNegatives = noDetectionIndices;
+
+[u, i] = unique(singleTruthMultipleDetections(:, 2)); % location of unique in i
+truePositives = [truePositives; singleTruthMultipleDetections(i, 1)];
+singleTruthMultipleDetections(i, :) = [];
+falsePositives = [falsePositives; singleTruthMultipleDetections(:, 1)];
+
+[u, i] = unique(singleDetectionMultipleTruths(:, 1)); % location of unique in i
+truePositives = [truePositives; singleDetectionMultipleTruths(i, 1)];
+singleDetectionMultipleTruths(i, :) = [];
+falseNegatives = [falseNegatives; singleDetectionMultipleTruths(:, 2)];
+
 % False positives
-imgannot{2} = imgannot_est(noTruthIndices, :); 
-imgannot_est(noTruthIndices, :) = NaN;
+imgannot{2} = imgannot_est(falsePositives, :); 
+imgannot_est(falsePositives, :) = NaN;
 % False negatives
-imgannot{3} = imgannot_true(noDetectionIndices, :); 
-imgannot_true(noDetectionIndices, :) = NaN;
+imgannot{3} = imgannot_true(falseNegatives, :); 
+imgannot_true(falseNegatives, :) = NaN;
 % True positives
-imgannot{1} = imgannot_est(singleTruthSingleDetection(:, 1), :); 
-imgannot_est(singleTruthSingleDetection(:, 1), :) = NaN;
+imgannot{1} = imgannot_est(truePositives, :); 
+imgannot_est(truePositives, :) = NaN;
 % imgannot{3} = imgannot_true(singleTruthSingleDetection(:, 2), :); 
 % imgannot_true(singleTruthSingleDetection(:, 2), :) = NaN;
 
 options = rmfield(options, 'diameter');
 argList = reshape([fieldnames(options)'; struct2cell(options)'], 1, 2*length(fieldnames(options)));
 plotAnnot(imgList, imgannot, argList{:})
+
+% 26.07.2018 - updated to consider non-exclusive matches
+
+%% TODO
+% consider multipleTruthsMultipleDetections
