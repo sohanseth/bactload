@@ -1,8 +1,10 @@
 ## Estimating Bacterial and Cellular Load in FCFM Imaging
 
-```text
 We address the task of estimating bacterial and cellular load in the human distalung with fibered confocal fluorescence microscopy (FCFM). In pulmonary FCFM some cells can display autofluorescence, and they appear as disc like objects in the FCFM images, whereas bacteria, although not autofluorescent, appear as bright blinking dots when exposed to a targeted smartprobe.  Estimating bacterial and cellular load becomes a challenging task due to the presence of background from autofluorescent human lung tissues, i.e., elastin, and imaging artifacts from motion etc. We create a database of annotated images for both these tasks where bacteria and cells were annotated, and use these databases for supervised learning. We extract image patches around each pixel as features, and train a classifier to predict if a bacterium or cell is present at that pixel. We apply our approach on two datasets for detecting bacteria and cells respectively. For the bacteria dataset, we show that the estimated bacterial load increases after introducing the targeted smartprobe in the presence of bacteria. For the cell dataset, we show that the estimated cellular load agrees with a clinician’s assessment.
-```
+
+Without bacteria             |  With bacteria
+:-------------------------:|:-------------------------:
+<img src="./figures/png/imageKev_36.png" width="400">  |  <img src="./figures/png/imageKev_63.png" width="400">
 
 ![image](./figures/png/imageKev_36.png)  
 ![image](./figures/png/imageKev_63.png)  
@@ -40,7 +42,6 @@ Reference
 	author = {Seth, Sohan and Akram, Ahsan R. and Dhaliwal, Kevin and Williams, Christopher K. I.},
 	month = jan,
 	year = {2018},
-	keywords = {bacteria, cell, FCFM imaging, logistic regression, lung, radial basis function network, supervised learning},
 	pages = {11},
 }
 ```
