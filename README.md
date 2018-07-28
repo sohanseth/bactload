@@ -6,9 +6,6 @@ Without bacteria             |  With bacteria
 :-------------------------:|:-------------------------:
 <img src="./figures/png/imageKev_36.png" width="400">  |  <img src="./figures/png/imageKev_63.png" width="400">
 
-![image](./figures/png/imageKev_36.png)  
-![image](./figures/png/imageKev_63.png)  
-
 Dependencies
 ---
 Download the relevant code and add to the Matlab path  
